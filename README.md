@@ -1,3 +1,3 @@
 # Flux.Net
 
-Fluent Api for flux query builder in C#
+Flux query builder fluent api for C#
