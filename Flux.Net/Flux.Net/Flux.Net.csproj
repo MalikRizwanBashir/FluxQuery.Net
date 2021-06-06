@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<OutputType>Library</OutputType>
+		<ApplicationIcon />
+		<StartupObject />
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Description>Flux query builder client library for C#</Description>
+		<Copyright></Copyright>
+		<RepositoryUrl></RepositoryUrl>
+		<PackageTags></PackageTags>
+		<PackageId>Flux.Net</PackageId>
+		<Authors></Authors>
+		<Company>Flux.Net</Company>
+		<Product>Flux.Net</Product>
+		<Version>1.0.0</Version>
+		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<FileVersion>1.0.0</FileVersion>
+		<PackageProjectUrl>https://github.com/MalikRizwanBashir/Flux.Net</PackageProjectUrl>
+		<NeutralLanguage />
+		<PackageReleaseNotes>Initail release with basic timseries functions</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NodaTime" Version="3.0.5" />
+	</ItemGroup>
+
+</Project>
