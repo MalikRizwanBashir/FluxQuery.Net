@@ -11,10 +11,10 @@
 		<Copyright></Copyright>
 		<RepositoryUrl></RepositoryUrl>
 		<PackageTags></PackageTags>
-		<PackageId>Flux.Net</PackageId>
+		<PackageId>FluxQuery.Net</PackageId>
 		<Authors></Authors>
-		<Company>Flux.Net</Company>
-		<Product>Flux.Net</Product>
+		<Company>FluxQuery.Net</Company>
+		<Product>FluxQuery.Net</Product>
 		<Version>1.0.0</Version>
 		<AssemblyVersion>1.0.0</AssemblyVersion>
 		<FileVersion>1.0.0</FileVersion>
