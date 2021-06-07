@@ -10,6 +10,6 @@ QueryBuilder.From("datasource", "retention")
                 .Filter(f => f.Measurement("measurementName")
                   .Select(s => s.Tags("tag1", "tag2", "tag3")
                     .Fields("field1", "field2"))
-                  .Filter("tag1==tagevalue"))
+                  .Filter("'tag1'==tagevalue"))
                 .AbsoluteTimeRange(DateTime.Now.AddDays(-1), DateTime.Now);
 ```
