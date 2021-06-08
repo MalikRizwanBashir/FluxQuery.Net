@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFrameworks>netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<OutputType>Library</OutputType>
 		<ApplicationIcon />
@@ -15,9 +15,9 @@
 		<Authors></Authors>
 		<Company>FluxQuery.Net</Company>
 		<Product>FluxQuery.Net</Product>
-		<Version>1.0.0</Version>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
-		<FileVersion>1.0.0</FileVersion>
+		<Version>1.0.1</Version>
+		<AssemblyVersion>1.0.1</AssemblyVersion>
+		<FileVersion>1.0.1</FileVersion>
 		<PackageProjectUrl>https://github.com/MalikRizwanBashir/Flux.Net</PackageProjectUrl>
 		<NeutralLanguage />
 		<PackageReleaseNotes>Initail release with basic timseries functions</PackageReleaseNotes>
