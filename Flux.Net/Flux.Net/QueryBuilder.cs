@@ -17,16 +17,16 @@ namespace Flux.Net
 
     public class FluxQuery
     {
-        private string query = string.Empty;
         private string limitRecords = string.Empty;
         private string sortRecords = string.Empty;
         private string window = string.Empty;
         private FluxFilter filter = new FluxFilter();
         private Aggregates Aggregate = new Aggregates();
         private Functions Function = new Functions();
+        StringBuilder queryString = new StringBuilder();
         public FluxQuery(string dataSource, string retentionPolicy = "autogen")
         {
-            query = $@"from(bucket:""{dataSource}/{retentionPolicy}"") ";
+            queryString.Append($@"from(bucket:""{dataSource}/{retentionPolicy}"") ");
         }
 
         #region time range
@@ -35,14 +35,14 @@ namespace Flux.Net
             var startUnit = GetTimeUnit(start.Key);
             if (end == null)
             {
-                query = @$"{query}
-                        |> range(start: {start.Value}{startUnit})";
+                queryString.Append("\n");
+                queryString.Append(@$"|> range(start: {start.Value}{startUnit})");
             }
             else
             {
                 var endUnit = GetTimeUnit(start.Key);
-                query = @$"{query}
-                        |> range(start: {start.Value}{startUnit}, stop: {end.Value}{endUnit}) ";
+                queryString.Append("\n");
+                queryString.Append(@$"|> range(start: {start.Value}{startUnit}, stop: {end.Value}{endUnit}) ");
             }
             return this;
         }
@@ -102,15 +102,15 @@ namespace Flux.Net
 
         private FluxQuery AbsoluteTimeRange(string start, string end)
         {
-            query = @$"{query}
-                        |> range(start: {start}, stop: {end}) ";
+            queryString.Append("\n");
+            queryString.Append(@$"|> range(start: {start}, stop: {end}) ");
             return this;
         }
 
         private FluxQuery AbsoluteTimeRange(string start)
         {
-            query = @$"{query}
-                        |> range(start: {start}) ";
+            queryString.Append("\n");
+            queryString.Append(@$"|> range(start: {start}) ");
             return this;
         }
         #endregion
@@ -161,19 +161,21 @@ namespace Flux.Net
 
         public FluxQuery Count()
         {
-            limitRecords = @$"|> count() ";
+            limitRecords = "\n|> count() ";
             return this;
         }
 
         public FluxQuery Sort(bool desc, params string[] columns)
         {
-            sortRecords = @$"|> sort(columns: [{ string.Join(@" ,", columns.Select(s => { return $@"""{s}"""; })) } ], desc: {desc}) ";
+            sortRecords = @$"
+|> sort(columns: [{ string.Join(@" ,", columns.Select(s => { return $@"""{s}"""; })) } ], desc: {desc}) ";
             return this;
         }
 
         public FluxQuery Limit(int limit, int offset = 0)
         {
-            limitRecords = @$"|> limit(n: {limit}, offset: {offset}) ";
+            limitRecords = @$"
+|> limit(n: {limit}, offset: {offset}) ";
             return this;
         }
 
@@ -184,7 +186,6 @@ namespace Flux.Net
             var m = filter?.MeasurementName;
             var aggr = Aggregate?._Aggregates;
             var fun = Function?._Functions;
-            string queryString = string.Empty;
             string filterQuery = string.Empty;
 
             if (!string.IsNullOrEmpty(m))
@@ -194,53 +195,60 @@ namespace Flux.Net
 
             if (!string.IsNullOrEmpty(select))
             {
-                filterQuery = @$"{filterQuery} 
-                                 {select} ";
+                filterQuery = @$"{filterQuery} {select}";
             }
 
             if (!string.IsNullOrEmpty(filt))
             {
-                filterQuery = @$"{filterQuery} 
-                                 {filt} ";
+                filterQuery = @$"{filterQuery} {filt}";
             }
             if (!string.IsNullOrEmpty(filterQuery))
             {
-                query = @$"|> filter(fn: (r) => {filterQuery} )";
+                queryString.Append("\n");
+                queryString.Append(@$"|> filter(fn: (r) => {filterQuery})");
             }
 
             if (!string.IsNullOrEmpty(fun))
             {
-                queryString = @$"{queryString} 
-                                 {fun} ";
+                queryString.Append(fun);
+                queryString.Append("\n");
+                //queryString = @$"{queryString} 
+                //                 {fun} ";
             }
 
             if (!string.IsNullOrEmpty(window))
             {
-                queryString = @$"{queryString} 
-                                 {window} ";
+                queryString.Append(window);
+                queryString.Append("\n");
+                //queryString = @$"{queryString} 
+                //                 {window} ";
             }
 
             if (!string.IsNullOrEmpty(aggr))
             {
-                queryString = @$"{queryString} 
-                                 {aggr} ";
+                queryString.Append(aggr);
+                queryString.Append("\n");
+                //queryString = @$"{queryString} 
+                //                 {aggr} ";
             }
 
             if (!string.IsNullOrEmpty(sortRecords))
             {
-                queryString = @$"{queryString} 
-                                 {sortRecords} ";
+                queryString.Append(sortRecords);
+                queryString.Append("\n");
+                //queryString = @$"{queryString} 
+                //                 {sortRecords} ";
             }
 
             if (!string.IsNullOrEmpty(limitRecords))
             {
-                queryString = @$"{queryString} 
-                                 {limitRecords} ";
+                queryString.Append(limitRecords);
+                queryString.Append("\n");
+                //queryString = @$"{queryString} 
+                //                 {limitRecords} ";
             }
 
-            query = @$"{query}
-                         {queryString}";
-            return query;
+            return queryString.ToString();
         }
 
 

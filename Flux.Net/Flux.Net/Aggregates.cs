@@ -16,35 +16,35 @@ namespace Flux.Net
         public Aggregates Mean(string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> mean(column: ""{ column }"") ";
+|> mean(column: ""{ column }"") ";
             return this;
         }
 
         public Aggregates Min(string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> min(column: ""{ column }"") ";
+|> min(column: ""{ column }"") ";
             return this;
         }
 
         public Aggregates Max(string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> max(column: ""{ column }"") ";
+|> max(column: ""{ column }"") ";
             return this;
         }
 
         public Aggregates Sum(string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> sum(column: ""{ column }"") ";
+|> sum(column: ""{ column }"") ";
             return this;
         }
 
         public Aggregates Mode(string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> mode(column: ""{ column }"") ";
+|> mode(column: ""{ column }"") ";
             return this;
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace Flux.Net
         public Aggregates Spread(string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> spread(column: ""{ column }"") ";
+|> spread(column: ""{ column }"") ";
             return this;
         }
 
@@ -70,7 +70,7 @@ namespace Flux.Net
         public Aggregates MovingAverage(int nRecords)
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> movingAverage(n: ""{ nRecords }"") ";
+|> movingAverage(n: ""{ nRecords }"") ";
             return this;
         }
 
@@ -84,7 +84,7 @@ namespace Flux.Net
         public Aggregates TimedMovingAverage(string interval, string duration, string column = "_value")
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> timedMovingAverage(every: { interval }, period: { duration }, column: ""{ column }"") ";
+|> timedMovingAverage(every: { interval }, period: { duration }, column: ""{ column }"") ";
             return this;
         }
 
@@ -97,7 +97,7 @@ namespace Flux.Net
         public Aggregates AggregateWindow(string interval, string aggregateMethod)
         {
             _Aggregates = @$"{_Aggregates} 
-                            |> aggregateWindow(every: { interval }, fn: { aggregateMethod }) ";
+|> aggregateWindow(every: { interval }, fn: { aggregateMethod }) ";
             return this;
         }
     }

@@ -22,9 +22,9 @@ namespace Flux.Net
             SelectQuery = filter;
         }
 
-        public FluxFilter Filter(string filters)
+        public FluxFilter Where(string filters)
         {
-            FilterQuery = filters;
+            FilterQuery = $"And {filters}";
             return this;
         }
 
@@ -38,7 +38,7 @@ namespace Flux.Net
         {
             var selectFilter = new FluxSelect();
             filter.Invoke(selectFilter);
-            SelectQuery = $" And ( {selectFilter.Select} )";
+            SelectQuery = $" And ({selectFilter.Select})";
             return this;
         }
     }
@@ -54,14 +54,20 @@ namespace Flux.Net
         public FluxSelect Fields(params string[] fields)
         {
             var sp = "r._field == " + string.Join(@" or r._field == ", fields.Select(s => { return $@"'{s}'"; }));
-            Select = $"{Select} and {sp} ";
+            if (string.IsNullOrEmpty(Select))
+                Select = sp;
+            else
+                Select = $"{Select} and {sp} ";
             return this;
         }
 
         public FluxSelect Tags(params string[] fields)
         {
             var sp = "r.tag == " + string.Join(@" or r.tag == ", fields.Select(s => { return $@"'{s}'"; }));
-            Select = $"{Select} and {sp} ";
+            if (string.IsNullOrEmpty(Select))
+                Select = sp;
+            else
+                Select = $"{Select} and {sp} ";
             return this;
         }
     }
