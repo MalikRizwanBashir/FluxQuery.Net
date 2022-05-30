@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 
 namespace Flux.Net
@@ -20,10 +19,12 @@ namespace Flux.Net
         private string limitRecords = string.Empty;
         private string sortRecords = string.Empty;
         private string window = string.Empty;
+        private string group = string.Empty;
         private FluxFilter filter = new FluxFilter();
         private Aggregates Aggregate = new Aggregates();
         private Functions Function = new Functions();
         StringBuilder queryString = new StringBuilder();
+
         public FluxQuery(string dataSource, string retentionPolicy = "autogen")
         {
             queryString.Append($@"from(bucket:""{dataSource}/{retentionPolicy}"") ");
@@ -135,12 +136,6 @@ namespace Flux.Net
             return this;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interval">The frequency of time windows. example 1m, 1h, 1d, mo, 1y</param>
-        /// <param name="filterAction"></param>
-        /// <returns></returns>
         public FluxQuery Window(string interval, Action<Aggregates> filterAction = null)
         {
             window = @$"window(every: {interval})";
@@ -179,6 +174,12 @@ namespace Flux.Net
             return this;
         }
 
+        public FluxQuery Group()
+        {
+            group = "\n|> group() ";
+            return this;
+        }
+
         public string ToQuery()
         {
             var select = filter?.SelectQuery;
@@ -206,6 +207,13 @@ namespace Flux.Net
             {
                 queryString.Append("\n");
                 queryString.Append(@$"|> filter(fn: (r) => {filterQuery})");
+            }
+
+            if (!string.IsNullOrEmpty(group))
+            {
+                // Insert group to merge all tables
+                queryString.Append(group);
+                queryString.Append("\n");
             }
 
             if (!string.IsNullOrEmpty(fun))
