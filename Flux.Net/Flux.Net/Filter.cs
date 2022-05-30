@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Flux.Net
 {
@@ -24,8 +23,19 @@ namespace Flux.Net
 
         public FluxFilter Where(string filters)
         {
-            FilterQuery = $"And {filters}";
+            FilterQuery = $"and {filters}";
             return this;
+        }
+
+        public FluxFilter Where(IDictionary<string, string> tagFilters)
+        {
+            if (tagFilters == null || tagFilters.Count() == 0)
+                return this;
+
+            var conditions = tagFilters
+                .Select(kvp => $"r.{kvp.Key} == \"{kvp.Value}\"");
+
+            return Where(string.Join(" and ", conditions));
         }
 
         public FluxFilter Measurement(string measurement)
@@ -38,7 +48,7 @@ namespace Flux.Net
         {
             var selectFilter = new FluxSelect();
             filter.Invoke(selectFilter);
-            SelectQuery = $" And ({selectFilter.Select})";
+            SelectQuery = $" and ({selectFilter.Select})";
             return this;
         }
     }
@@ -53,7 +63,7 @@ namespace Flux.Net
 
         public FluxSelect Fields(params string[] fields)
         {
-            var sp = "r._field == " + string.Join(@" or r._field == ", fields.Select(s => { return $@"'{s}'"; }));
+            var sp = "r._field == " + string.Join(@" or r._field == ", fields.Select(s => { return $@"""{s}"""; }));
             if (string.IsNullOrEmpty(Select))
                 Select = sp;
             else
@@ -63,7 +73,7 @@ namespace Flux.Net
 
         public FluxSelect Tags(params string[] fields)
         {
-            var sp = "r.tag == " + string.Join(@" or r.tag == ", fields.Select(s => { return $@"'{s}'"; }));
+            var sp = "r.tag == " + string.Join(@" or r.tag == ", fields.Select(s => { return $@"""{s}"""; }));
             if (string.IsNullOrEmpty(Select))
                 Select = sp;
             else
