@@ -1,7 +1,7 @@
-# Flux.Net
-[![Nuget](https://img.shields.io/nuget/v/FluxQuery.Net)](https://www.nuget.org/packages/FluxQuery.Net/)
+# PW.FluxQueryNet
 
-Flux query builder fluent api for C#
+Flux query builder fluent API for C#.
+Forked from [this project](https://github.com/MalikRizwanBashir/FluxQuery.Net) and customized.
 
 ## Example:
 
