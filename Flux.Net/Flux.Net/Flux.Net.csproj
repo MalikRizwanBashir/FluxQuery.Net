@@ -20,11 +20,11 @@
 		<FileVersion>1.0.1</FileVersion>
 		<PackageProjectUrl>https://github.com/MalikRizwanBashir/Flux.Net</PackageProjectUrl>
 		<NeutralLanguage />
-		<PackageReleaseNotes>Initail release with basic timseries functions</PackageReleaseNotes>
+		<PackageReleaseNotes>Initial release with basic timseries functions</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NodaTime" Version="3.0.5" />
+		<PackageReference Include="NodaTime" Version="3.1.0" />
 	</ItemGroup>
 
 </Project>
