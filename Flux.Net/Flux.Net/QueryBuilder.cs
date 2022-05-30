@@ -162,8 +162,9 @@ namespace Flux.Net
 
         public FluxQuery Sort(bool desc, params string[] columns)
         {
-            sortRecords = @$"
-|> sort(columns: [{ string.Join(@" ,", columns.Select(s => { return $@"""{s}"""; })) } ], desc: {desc}) ";
+            var boolean = FormattableString.Invariant($"{desc}");
+            sortRecords = $@"
+|> sort(columns: [{ string.Join(@" ,", columns.Select(s => { return $@"""{s}"""; })) } ], desc: {boolean}) ";
             return this;
         }
 
@@ -278,7 +279,7 @@ namespace Flux.Net
                     un = "d";
                     break;
                 case TimeUnit.Months:
-                    un = "m";
+                    un = "mo";
                     break;
                 case TimeUnit.Years:
                     un = "y";
