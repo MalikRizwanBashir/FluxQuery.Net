@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Flux.Net
+﻿namespace Flux.Net
 {
     public class Aggregates
     {
@@ -11,6 +6,13 @@ namespace Flux.Net
         public Aggregates()
         {
             _Aggregates = string.Empty;
+        }
+
+        public Aggregates Aggregate(string methodName, string column = "_value")
+        {
+            _Aggregates = $@"{_Aggregates} 
+|> {methodName}(column: ""{ column }"") ";
+            return this;
         }
 
         public Aggregates Mean(string column = "_value")
