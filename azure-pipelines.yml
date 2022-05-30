@@ -1,0 +1,47 @@
+# Continuous Integration (CI) and Continuous Delivery (CD) for PW.FluxQueryNet
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - develop
+  paths:
+    exclude:
+    - .github
+    - .gitignore
+    - LICENSE
+    - README.md
+
+# Use templates from the Utilities/PipelinesTemplates repository
+resources:
+  repositories:
+  - repository: PipelinesTemplates
+    type: git
+    name: Utilities/PipelinesTemplates
+
+# Pipeline name
+name: PW.FluxQueryNet.$(Build.BuildId)
+
+stages:
+- stage: Build
+  jobs:
+  - template: /DotNet/Build+Test.yml@PipelinesTemplates
+    parameters:
+      projectTitle: PW.FluxQueryNet
+      executableTitle: Apps
+      libraryTitle: Libraries
+      vmImage: ubuntu-latest
+      libraryProjects: |
+        **/Flux.Net.csproj
+
+# Only publish package(s) from the main, master or a release branch
+- ${{ if or(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')) }}:
+  - stage: Publish
+    jobs:
+    - template: /DotNet/PublishNuGet.yml@PipelinesTemplates
+      parameters:
+        projectTitle: PW.FluxQueryNet
+        environment: Publish-PW_FluxQueryNet-Env
+        packagesToPublish: |
+          **/PW.FluxQueryNet.*.nupkg
