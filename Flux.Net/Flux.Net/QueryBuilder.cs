@@ -1,6 +1,7 @@
 ﻿using NodaTime;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -26,7 +27,14 @@ namespace Flux.Net
         StringBuilder queryString = new StringBuilder();
         public FluxQuery(string dataSource, string retentionPolicy = "autogen")
         {
-            queryString.Append($@"from(bucket:""{dataSource}/{retentionPolicy}"") ");
+            if (string.IsNullOrEmpty(retentionPolicy))
+            {
+                queryString.Append($@"from(bucket:""{dataSource}"") ");
+            }
+            else
+            {
+                queryString.Append($@"from(bucket:""{dataSource}/{retentionPolicy}"") ");
+            }
         }
 
         #region time range
@@ -36,13 +44,13 @@ namespace Flux.Net
             if (end == null)
             {
                 queryString.Append("\n");
-                queryString.Append(@$"|> range(start: {start.Value}{startUnit})");
+                queryString.Append(@$"|> range(start: {Convert.ToString(start.Value, CultureInfo.InvariantCulture)}{startUnit})");
             }
             else
             {
                 var endUnit = GetTimeUnit(start.Key);
                 queryString.Append("\n");
-                queryString.Append(@$"|> range(start: {start.Value}{startUnit}, stop: {end.Value}{endUnit}) ");
+                queryString.Append(@$"|> range(start: {Convert.ToString(start.Value, CultureInfo.InvariantCulture)}{startUnit}, stop: {Convert.ToString(end.Value, CultureInfo.InvariantCulture)}{endUnit}) ");
             }
             return this;
         }
@@ -167,8 +175,9 @@ namespace Flux.Net
 
         public FluxQuery Sort(bool desc, params string[] columns)
         {
+            var orderString = Convert.ToString(desc, CultureInfo.InvariantCulture).ToLowerInvariant();
             sortRecords = @$"
-|> sort(columns: [{ string.Join(@" ,", columns.Select(s => { return $@"""{s}"""; })) } ], desc: {desc}) ";
+|> sort(columns: [{string.Join(@" ,", columns.Select(s => { return $@"""{s}"""; }))} ], desc: {orderString}) ";
             return this;
         }
 
