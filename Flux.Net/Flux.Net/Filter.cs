@@ -24,7 +24,7 @@ namespace Flux.Net
 
         public FluxFilter Where(string filters)
         {
-            FilterQuery = $"And {filters}";
+            FilterQuery = $"and {filters}";
             return this;
         }
 
@@ -38,7 +38,7 @@ namespace Flux.Net
         {
             var selectFilter = new FluxSelect();
             filter.Invoke(selectFilter);
-            SelectQuery = $" And ({selectFilter.Select})";
+            SelectQuery = $" and ({selectFilter.Select})";
             return this;
         }
     }
